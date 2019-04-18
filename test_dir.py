@@ -1,4 +1,7 @@
 import unittest
+import unittest
+import unittest.mock
+from mock import patch
 import dir_manager
 import json
 
@@ -16,10 +19,15 @@ class TestDir(unittest.TestCase):
         dir_manager.append_doc_to_shelf('1', '1')
         self.assertEqual(dir_manager.directories['1'][-1], '1')
 
-    def test_del(self):
+    @unittest.mock.patch('builtins.input', side_effect=['10006'])
+    def test_del(self, mock):
         dir_manager.delete_doc()
         self.assertEqual(len(dir_manager.documents), 2)
 
+    @unittest.mock.patch('builtins.input', side_effect=['11-2'])
+    def test_get_shelf(self, mock):
+        self.assertEqual(dir_manager.get_doc_shelf(), '1')
 
 if __name__ == '__main__':
     unittest.main()
+
